@@ -2,7 +2,7 @@
 epochs = 150
 batch_size = 100
 
-append_saveData = True      # False: save data를 지우고 새로 생성
+append_saveData = False      # False: save data를 지우고 새로 생성
                              # True : 기존 save data에 이어서 학습
 
 dataDir = './data_model2/'
@@ -20,7 +20,7 @@ nb_classes = 6  # 0, R1, R2, S3, L4, L5
 # Learning
 learning_rate = 0.5e-3    # 1e-3
 
-""" R1, R2, S3, L4, L5 """
+""" L1, L2, S3, R4, R5 """
 run_mode = 'digital'    # analog : Steering wheel을 부드럽게 이동
                         # digital : 직진, 좌, 우 중에 선택
 
@@ -31,21 +31,14 @@ servo_stright = 7.5
 servo_left = 5
 servo_step = 0.2
 # digital 방식
-str_steering = [['', 'R1', 'R2', 'S3', 'L4', 'L5'],
-                ['', 'RIGHT 1', 'RIGHT2', 'STRAIGHT 3', 'LEFT 4', 'LEFT 5']]
-servo_angle = [0, 10.0, 8.5, 7.5, 6.5, 5]
+str_steering = [['', 'L1', 'L2', 'S3', 'R4', 'R5'],
+                ['', 'LEFT 1', 'LEFT 2', 'STRAIGHT 3', 'RIGHT 4', 'RIGHT 5']]
+servo_angle = [0, 5.0, 6.5, 7.5, 8.5, 10.0]
 '''
 str_steering = [['', 'R1', 'S2', 'L3', 'L4', 'L5'],
                 ['', 'RIGHT', 'STARAIGHT', 'LEFT', 'LEFT 4', 'LEFT 5']]
 servo_angle = [0, 8.5, 7.5, 6.5, 6.5, 5]
 
-'''
-'''
-servo_right_d1 = 10.0
-servo_right_d2 = 8.5
-servo_stright_d3 = 7.5
-servo_left_d4 = 6.5
-servo_left_d5 = 5
 '''
 
 """ image size """

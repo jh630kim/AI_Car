@@ -32,7 +32,8 @@ def save_image(steering, fwriter):
     global start_flag
 
     if start_flag is True:
-        myfile = cfg.str_steering[0][steering] + '_' + time.strftime('%Y-%m-%d_%H-%M-%S')\
+        myfile = cfg.str_steering[0][steering] + '_'\
+                + time.strftime('%Y-%m-%d_%H-%M-%S')\
                 + '_' + str(img_cnt) + '.jpg'
         print(myfile)
 
@@ -53,8 +54,7 @@ if __name__ == '__main__':
     run_flag = cfg.run_mode
     pre_wheel_speed = wheel_speed = 0
     steering = 3
-    servo_angle = cfg.servo_angle[steering]
-    print(cfg.str_steering[1][steering], ':', servo_angle)
+    print(cfg.str_steering[1][steering], ':', cfg.servo_angle[steering])
     fwriter = ''
 
     # PWM Start
@@ -112,16 +112,10 @@ if __name__ == '__main__':
         """ 주행 중이 아닌 경우 Capture one image"""
         if start_flag is False and rec_flag is True:
             # R1, R2, S3, L4, L5
-            if k == 83:  # 1
-                if steering > 1:
-                    steering -= 1
-                save_image(steering, fwriter)
-            if k == 81:  # 3
-                if steering < 5:
-                    steering += 1
-                save_image(steering, fwriter)
-            if k == 82:
-                steering = 3
+            if int(k) > 0 and int(k) < 6:
+                steering = int(k)
+                print(cfg.str_steering[1][steering], ':',
+                      cfg.servo_angle[steering])
                 save_image(steering, fwriter)
 
         """ Run """
@@ -138,40 +132,33 @@ if __name__ == '__main__':
             else:
                 wheel_speed = pre_wheel_speed
                 # Left arrow: 81, Right arrow: 83, Up arrow: 82, Down arrow: 84
-                if k == 83:
+                if k == 81:
                     pre_wheel_speed = wheel_speed = cfg.normal_speed
                     if steering > 1:
                         steering -= 1
-                    servo_angle = cfg.servo_angle[steering]
-                    print(cfg.str_steering[1][steering], ':', servo_angle)
+                    print(cfg.str_steering[1][steering], ':',
+                          cfg.servo_angle[steering])
 
-                if k == 81:
+                if k == 83:
                     pre_wheel_speed = wheel_speed = cfg.normal_speed
                     if steering < 5:
                         steering += 1
-                    servo_angle = cfg.servo_angle[steering]
-                    print(cfg.str_steering[1][steering], ':', servo_angle)
+                    print(cfg.str_steering[1][steering], ':',
+                          cfg.servo_angle[steering])
 
                 if k == 82:
                     pre_wheel_speed = wheel_speed = cfg.normal_speed
                     steering = 3
-                    servo_angle = cfg.servo_angle[steering]
-                    print(cfg.str_steering[1][steering], ':', servo_angle)
-
-            '''
-            d.setMotor(d.CH1, wheel_speed)
-            d.setMotor(d.CH2, wheel_speed)
-            d.setServo(servo_angle)
-            '''
+                    print(cfg.str_steering[1][steering], ':',
+                          cfg.servo_angle[steering])
         # 정지
         else:
             pre_wheel_speed = wheel_speed = 0
             steering = 3
-            servo_angle = cfg.servo_angle[steering]
 
         d.setMotor(d.CH1, wheel_speed)
         d.setMotor(d.CH2, wheel_speed)
-        d.setServo(servo_angle)
+        d.setServo(cfg.servo_angle[steering])
 
 d.stopGPIO()
 cv2.destroyAllWindows()

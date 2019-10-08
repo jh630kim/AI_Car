@@ -5,7 +5,7 @@ import csv
 
 import _config as cfg
 
-import _model_2 as model
+import _model_2_100x30 as model
 
 
 def LoadImgData(dataSet):
@@ -35,6 +35,13 @@ def ReadCSV(file_name):
 def WriteCSV(file_name, datalist):
     # datalist를 csv file에 저장
     with open(file_name, 'w', newline='') as csvfile:
+        filewriter = csv.writer(csvfile, delimiter=',', quotechar='|')
+        filewriter.writerows(datalist)
+
+
+def AppendCSV(file_name, datalist):
+    # datalist를 csv file에 저장
+    with open(file_name, 'a', newline='') as csvfile:
         filewriter = csv.writer(csvfile, delimiter=',', quotechar='|')
         filewriter.writerows(datalist)
 
