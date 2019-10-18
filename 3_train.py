@@ -12,7 +12,7 @@ import _model_2_100x30 as model
 
 ''' ===<< 확인사항 >> +========== '''
 '''
-    1) config.py: dataDir, append_saveData
+    1) config.py: dataDir, append_saveData, epoches
     2) util.py: 적용 model
     2) train.py: 적용 model
 '''
@@ -31,7 +31,10 @@ dataSet = util.ReadCSV(cfg.dataFile)
 total_num = len(dataSet)
 
 # Data 섞기
-random.shuffle(dataSet)
+k = input('Shuffle Data?(y/n) ')
+if k.upper() == 'Y':
+    random.shuffle(dataSet)
+    util.WriteCSV(file_name=cfg.dataFile, datalist=dataSet)
 
 # Train Dataset
 trainSet = np.array(dataSet[:int(total_num * 0.8)])
@@ -46,7 +49,7 @@ util.WriteCSV(file_name=cfg.testFile, datalist=testSet)
 # 한번에 전체 이미지를 로드하면 시스템이 죽는다!!!
 # x_img_train = util.LoadImgData(trainSet)  # img 추출
 # x_img_test = util.LoadImgData(testSet)  # img 추출
-
+exit()
 ''' ============================= '''
 ''' 초기 설정 '''
 ''' ============================= '''
@@ -72,6 +75,13 @@ if not os.path.exists(cfg.saveData):
     os.makedirs(cfg.saveData)
 if not os.path.exists(cfg.logData):
     os.makedirs(cfg.logData)
+
+'''
+dirs = [[80, 85, 90, 95], ['save_80', 'save_85', 'save_90', 'save_95']]
+for i in range(4):
+    if not os.path.exists(cfg.dataDir + dirs[1][i]):
+        os.makedirs(cfg.dataDir + dirs[1][i])
+'''
 
 ''' ============================= '''
 ''' tf를 이용해서 trainFile 읽기 '''
@@ -125,7 +135,7 @@ for epoch in range(cfg.epochs):
         avg_cost += c / train_batch
         sum_accuracy += a
 
-        # (4) summary를 writer에 추가 - TensorBoard 기록을 위한 logs 기록
+        # (4) summary를 writer에 추가 - TensorBoard를 위한 logs 기록
         s = sess.run(model.merged_summary,
                      feed_dict={model.X: x_img_batch, model.Y: y_batch,
                                 model.keep_prob: 1.0})
@@ -145,12 +155,17 @@ for epoch in range(cfg.epochs):
     filename = saver.save(sess, checkpoint_path)
     print("Model saved in file: %s" % filename)
 
+
 ''' 소요시간 기록 '''
+'''
 end = time.strftime('%Y-%m-%d_%H-%M-%S')
 print('begin: ', begin)
 print('end: ', end)
+'''
 
 ''' TensorBoard 사용법 기록 '''
+'''
 print("Run the command line:\n"
       "--> tensorboard --logdir=./logs --port=6006"
       "\nThen open localhost:6006/ into your web browser")
+'''

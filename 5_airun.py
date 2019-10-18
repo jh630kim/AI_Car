@@ -9,11 +9,13 @@ import _config as cfg
 import _driver_OPi as d
 # import _driver_Win as d
 
-import _model_2 as model
+import _model_2_100x30 as model
 
 ''' ===<< 확인사항 >> +========== '''
 '''
-    1) config.py dataDir
+    1) config: dataDir
+    2) driver: Win vs OPi
+    3) airun: 적용 model
 '''
 ''' ============================= '''
 
@@ -51,12 +53,13 @@ if __name__ == '__main__':
         image = scipy.misc.imresize(full_image[cfg.trim_height:],
                                     [model.img_height, model.img_width]
                                     ) / 255.0
-
+        '''
         disp = scipy.misc.imresize(full_image[cfg.trim_height:],
-                                   [model.img_height*4, model.img_width*4]
+                                   [model.img_height*2, model.img_width*2]
                                    ) / 255.0
-
-        cv2.imshow("view of AI", disp)
+        '''
+    
+        cv2.imshow("view of AI", image)
 
         ''' steering 방향 계산 '''
         steering = model.Y_.eval(session=sess,

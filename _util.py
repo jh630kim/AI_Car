@@ -10,6 +10,7 @@ import _model_2_100x30 as model
 
 def LoadImgData(dataSet):
     # dataSet ([0]img_file, [1]steering)을 이용해 img_data를 Load
+    # return type은 image의 list임 (np.array 형식)
     img_list = []
     for i in range(len(dataSet)):
         file_path = cfg.trainData + '/' + dataSet[i].astype(str)[0]
@@ -44,12 +45,3 @@ def AppendCSV(file_name, datalist):
     with open(file_name, 'a', newline='') as csvfile:
         filewriter = csv.writer(csvfile, delimiter=',', quotechar='|')
         filewriter.writerows(datalist)
-
-
-def current_steering(steering):
-    ''' 현재 steering의 위치에 따른 servo_angle 변환 '''
-    servo_angle = cfg.servo_angle[steering]
-    str_steering = cfg.str_steering[[0], [steering]]
-    print(cfg.str_steering[[1], [steering]])
-
-    return servo_angle, str_steering

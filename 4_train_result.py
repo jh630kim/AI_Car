@@ -1,5 +1,7 @@
 import tensorflow as tf
 import numpy as np
+import cv2
+import os
 import matplotlib.pyplot as plt
 
 import _config as cfg
@@ -7,11 +9,10 @@ import _util as util
 import _model_2_100x30 as model
 
 '''
-    1) config.py: dataDir, append_saveData
+    1) config.py: dataDir
     2) util.py: 적용 model
     2) train_result.py: 적용 model
 '''
-
 
 ''' ============================= '''
 ''' test set 읽기(목록!!!) '''
@@ -48,19 +49,33 @@ correct = np.zeros(cfg.nb_classes, dtype=np.int32)
 num_total = 0
 correct_total = 0
 
+# 초기 Directory가 없다면 새로 생성
+if not os.path.exists(cfg.trainData + '/PASS/'):
+    os.makedirs(cfg.trainData + '/PASS/')
+if not os.path.exists(cfg.trainData + '/FAIL/'):
+    os.makedirs(cfg.trainData + '/FAIL/')
+
 ''' 각 방향별 정확도 확인 '''
 for i in range(test_num):
     image = util.LoadImgData(testSet[i:i+1])
+    steering = int(testSet[i, 1])
+
     predict = model.Y_.eval(session=sess,
                             feed_dict={model.X: image, model.keep_prob: 1.0})
     predict = np.argmax(predict)
-    steering = int(testSet[i, 1])
 
-    for j in range(cfg.nb_classes):
-        if steering == j:
-            num[j] += 1
-            if predict == steering:
-                correct[j] += 1
+    num[steering] += 1
+
+    # 성공을 count하고, 성공과 실패에 따라 이미지 저장
+    if predict == steering:
+        correct[predict] += 1
+        cv2.imwrite(cfg.trainData + '/PASS/' + cfg.str_steering[0][predict] +
+                    '(-' + testSet[i:i+1, 0][0],
+                    image[0] * 255)  # cv2로 저장할때는 255를... scipy와 다르다.
+    else:
+        cv2.imwrite(cfg.trainData + '/FAIL/' + cfg.str_steering[0][predict] +
+                    '(-' + testSet[i:i+1, 0][0],
+                    image[0] * 255)  # cv2로 저장할때는 255를... scipy와 다르다.
 
 ''' 각 방향별 정확도 출력 '''
 for i in range(1, cfg.nb_classes):

@@ -3,9 +3,9 @@ import tensorflow as tf
 import _config as cfg
 
 
-model_name = 'model_JHK'
-img_width = 100  # 200  # 320  # 320 # Resized Video width to be handled
-img_height = 30  # 66  # 150  # 150 # Resized Video height to be handled
+model_name = 'model_2'
+img_width = 100  # Resized Video width to be handled
+img_height = 30  # Resized Video height to be handled
 
 
 def weight(name, shape, w_type = 0):

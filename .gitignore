@@ -1,2 +1,5 @@
 *.jpg
 *.pyc
+*.JHKIM
+*.R570
+log*/

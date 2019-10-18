@@ -1,8 +1,8 @@
 """ 디렉토리 선언 """
-epochs = 150
-batch_size = 100
+epochs = 1
+batch_size = 200
 
-append_saveData = False      # False: save data를 지우고 새로 생성
+append_saveData = True      # False: save data를 지우고 새로 생성
                              # True : 기존 save data에 이어서 학습
 
 dataDir = './data_model2/'
